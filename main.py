@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import os
 import re
 from pathlib import Path
+from urllib.parse import unquote_to_bytes
 
 import markdown
 from flask import Flask, abort, redirect, render_template, request, url_for
@@ -25,6 +27,33 @@ SOURCE_SUFFIXES = {
 }
 
 app = Flask(__name__)
+
+
+class DecodePathInfo:
+    """Раскодировать PATH_INFO, если этого не сделал сервер.
+
+    По WSGI-спецификации PATH_INFO приходит уже раскодированным, и Werkzeug
+    на это рассчитывает. Python-рантайм Vercel отдаёт путь как есть, вместе
+    с %-escape-последовательностями, поэтому пути с кириллицей и пробелами
+    не находились. Локальный сервер декодирует правильно, так что чинить
+    нужно только на Vercel — иначе имя файла с настоящим «%» раскодируется
+    второй раз и сломается.
+    """
+
+    def __init__(self, wsgi_app):
+        self.wsgi_app = wsgi_app
+
+    def __call__(self, environ, start_response):
+        path = environ.get("PATH_INFO", "")
+        if "%" in path:
+            # PATH_INFO по спецификации — байты, разложенные по latin-1;
+            # Werkzeug сам соберёт их обратно и раскодирует как utf-8.
+            environ["PATH_INFO"] = unquote_to_bytes(path).decode("latin-1")
+        return self.wsgi_app(environ, start_response)
+
+
+if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+    app.wsgi_app = DecodePathInfo(app.wsgi_app)
 
 
 # --------------------------------------------------------------------------

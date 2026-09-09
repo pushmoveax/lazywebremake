@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <meta name="description" content="Конспекты и заметки в markdown.">
+
+    <title>{% block title %}lazyweb{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="{{ url_for('index') }}">lazyweb</a>
+
+        <nav class="nav">
+            <a href="{{ url_for('index') }}"
+               class="{{ 'is-active' if current_path == '/' }}">Домой</a>
+            <a href="{{ url_for('Browse') }}"
+               class="{{ 'is-active' if current_path.startswith('/Browse') }}">Файлы</a>
+            <a href="{{ url_for('about') }}"
+               class="{{ 'is-active' if current_path == '/about' }}">Полезное</a>
+            <button type="button" class="nav-button" id="contactOpen">Контакты</button>
+        </nav>
+    </div>
+</header>
+
+<main class="page">
+    {% block body %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <span>заметки в markdown</span>
+    <a href="https://t.me/onedayyouwillcry" target="_blank" rel="noopener">telegram</a>
+</footer>
+
+<dialog id="contactDialog" class="dialog">
+    <form method="dialog" class="dialog-head">
+        <h2>Контакты</h2>
+        <button class="dialog-close" aria-label="Закрыть">&times;</button>
+    </form>
+    <p class="dialog-body">
+        Написать можно в телеграм —
+        <a href="https://t.me/onedayyouwillcry" target="_blank" rel="noopener">@onedayyouwillcry</a>
+    </p>
+</dialog>
+
+<script>
+    (function () {
+        var dialog = document.getElementById('contactDialog');
+        var open = document.getElementById('contactOpen');
+        if (!dialog || !open) return;
+
+        open.addEventListener('click', function () {
+            dialog.showModal();
+        });
+
+        dialog.addEventListener('click', function (event) {
+            if (event.target === dialog) dialog.close();
+        });
+    })();
+</script>
+
+</body>
+</html>

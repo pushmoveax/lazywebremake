@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} — lazyweb{% endblock %}
+
+{% block body %}
+
+<nav class="crumbs" aria-label="Навигация">
+    <a href="{{ url_for('Browse') }}">Файлы</a>
+    {% for crumb in crumbs %}
+        <span class="crumb-sep" aria-hidden="true">/</span>
+        {% if loop.last %}
+            <span class="crumb-current">{{ crumb.name }}</span>
+        {% else %}
+            <a href="{{ url_for('Browse', filepath=crumb.path) }}">{{ crumb.name }}</a>
+        {% endif %}
+    {% endfor %}
+</nav>
+
+{% if is_source %}
+<h1 class="page-title">{{ title }}</h1>
+{% endif %}
+
+{% if toc %}
+<details class="toc">
+    <summary>Содержание</summary>
+    <ul>
+        {% for item in toc %}
+            <li data-depth="{{ item.depth }}">
+                <a href="#{{ item.id }}">{{ item.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</details>
+{% endif %}
+
+<article class="prose{% if is_source %} prose-source{% endif %}">
+    {{ content|safe }}
+</article>
+
+<div class="note-foot">
+    <a class="back" href="{{ url_for('Browse', filepath=parent) if parent else url_for('Browse') }}">
+        ← Назад
+    </a>
+</div>
+
+{% endblock %}

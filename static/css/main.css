@@ -1,0 +1,837 @@
+/* ==========================================================================
+   lazyweb — тёмная тема для чтения заметок
+   ========================================================================== */
+
+:root {
+    --bg:            #0f1011;
+    --surface:       #16181a;
+    --surface-hover: #1c1f22;
+    --line:          #26292d;
+    --line-soft:     #1e2124;
+
+    --text:          #e5e7ea;
+    --dim:           #a1a7ae;
+    --faint:         #6d747c;
+
+    --accent:        #7fb59b;
+    --accent-quiet:  #3c584c;
+
+    --radius:        8px;
+    --page:          820px;
+
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+            "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+            "Liberation Mono", monospace;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--bg);
+    color: var(--text);
+
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.6;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Шапка
+   -------------------------------------------------------------------------- */
+
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    background-color: var(--bg);
+    border-bottom: 1px solid var(--line-soft);
+}
+
+.topbar-inner {
+    max-width: var(--page);
+    margin: 0 auto;
+    padding: 0 24px;
+
+    height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.brand {
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.brand:hover {
+    text-decoration: none;
+    color: var(--accent);
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav a,
+.nav-button {
+    padding: 6px 10px;
+    border-radius: 6px;
+
+    color: var(--dim);
+    font-size: 14px;
+    font-family: inherit;
+    line-height: 1.4;
+
+    background: none;
+    border: 0;
+    cursor: pointer;
+
+    transition: color .12s ease, background-color .12s ease;
+}
+
+.nav a:hover,
+.nav-button:hover {
+    color: var(--text);
+    background-color: var(--surface);
+    text-decoration: none;
+}
+
+.nav a.is-active {
+    color: var(--text);
+    background-color: var(--surface);
+}
+
+/* --------------------------------------------------------------------------
+   Каркас страницы
+   -------------------------------------------------------------------------- */
+
+.page {
+    flex: 1;
+    width: 100%;
+    max-width: var(--page);
+    margin: 0 auto;
+    padding: 40px 24px 72px;
+}
+
+.footer {
+    max-width: var(--page);
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 24px 32px;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+
+    border-top: 1px solid var(--line-soft);
+
+    color: var(--faint);
+    font-size: 13px;
+}
+
+.footer a {
+    color: var(--faint);
+}
+
+.footer a:hover {
+    color: var(--dim);
+}
+
+/* --------------------------------------------------------------------------
+   Главная
+   -------------------------------------------------------------------------- */
+
+.intro {
+    padding: 24px 0 8px;
+}
+
+.intro h1 {
+    margin: 0 0 16px;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.lead {
+    margin: 0 0 14px;
+    max-width: 60ch;
+    color: var(--dim);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.note-muted {
+    margin: 0 0 24px;
+    max-width: 60ch;
+    color: var(--faint);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.button {
+    display: inline-block;
+    padding: 9px 16px;
+
+    border: 1px solid var(--line);
+    border-radius: 6px;
+
+    background-color: var(--surface);
+    color: var(--text);
+    font-size: 14px;
+
+    transition: background-color .12s ease, border-color .12s ease;
+}
+
+.button:hover {
+    background-color: var(--surface-hover);
+    border-color: var(--accent-quiet);
+    text-decoration: none;
+}
+
+.section {
+    margin-top: 44px;
+}
+
+.section-title {
+    margin: 0 0 14px;
+    color: var(--faint);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.page-title {
+    margin: 0 0 24px;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+}
+
+/* --------------------------------------------------------------------------
+   Хлебные крошки
+   -------------------------------------------------------------------------- */
+
+.crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+
+    margin-bottom: 18px;
+
+    color: var(--faint);
+    font-size: 13px;
+}
+
+.crumbs a {
+    color: var(--faint);
+}
+
+.crumbs a:hover {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.crumb-sep {
+    color: var(--line);
+}
+
+.crumb-current {
+    color: var(--dim);
+}
+
+/* --------------------------------------------------------------------------
+   Списки файлов
+   -------------------------------------------------------------------------- */
+
+.entry-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.entry-list li + li {
+    border-top: 1px solid var(--line-soft);
+}
+
+.entry {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 13px 16px;
+
+    color: var(--text);
+    transition: background-color .12s ease;
+}
+
+.entry:hover {
+    background-color: var(--surface);
+    text-decoration: none;
+}
+
+.entry-name {
+    flex: 1;
+    min-width: 0;
+
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.entry:hover .entry-name {
+    color: var(--accent);
+}
+
+.entry-meta {
+    flex: none;
+    color: var(--faint);
+    font-size: 12.5px;
+}
+
+.entry-icon {
+    flex: none;
+    width: 17px;
+    height: 17px;
+
+    background-color: var(--faint);
+
+    -webkit-mask: center / contain no-repeat var(--icon);
+    mask: center / contain no-repeat var(--icon);
+}
+
+.entry-icon[data-kind="folder"] {
+    background-color: var(--accent);
+    --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.6.8l1 1.2H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'/%3E%3C/svg%3E");
+}
+
+.entry-icon[data-kind="note"] {
+    --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/%3E%3Cpath d='M14 3v5h5'/%3E%3Cpath d='M9 13h6'/%3E%3Cpath d='M9 17h4'/%3E%3C/svg%3E");
+}
+
+.entry-icon[data-kind="source"] {
+    --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 8-5 4 5 4'/%3E%3Cpath d='m15 8 5 4-5 4'/%3E%3C/svg%3E");
+}
+
+.entry-icon[data-kind="link"] {
+    --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 5H7a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4'/%3E%3Cpath d='M15 4h5v5'/%3E%3Cpath d='M20 4 11 13'/%3E%3C/svg%3E");
+}
+
+.plain-list {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--dim);
+    font-size: 15px;
+}
+
+.plain-list li {
+    margin: 6px 0;
+}
+
+.empty {
+    padding: 32px 0;
+    color: var(--faint);
+    font-size: 15px;
+}
+
+/* --------------------------------------------------------------------------
+   Содержание заметки
+   -------------------------------------------------------------------------- */
+
+.toc {
+    margin-bottom: 28px;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    background-color: var(--surface);
+}
+
+.toc summary {
+    padding: 11px 16px;
+    color: var(--dim);
+    font-size: 13px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.toc summary::-webkit-details-marker {
+    display: none;
+}
+
+.toc summary::before {
+    content: "▸";
+    display: inline-block;
+    width: 14px;
+    color: var(--faint);
+}
+
+.toc[open] summary::before {
+    content: "▾";
+}
+
+.toc[open] summary {
+    border-bottom: 1px solid var(--line-soft);
+}
+
+.toc ul {
+    margin: 0;
+    padding: 10px 16px 14px 30px;
+    list-style: none;
+}
+
+.toc li {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.toc li[data-depth="1"] { padding-left: 14px; }
+.toc li[data-depth="2"] { padding-left: 28px; }
+.toc li[data-depth="3"] { padding-left: 42px; }
+
+.toc a {
+    color: var(--dim);
+}
+
+.toc a:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   Текст заметки
+   -------------------------------------------------------------------------- */
+
+.prose {
+    max-width: 68ch;
+    font-size: 16.5px;
+    line-height: 1.75;
+    color: var(--text);
+    overflow-wrap: break-word;
+}
+
+.prose > *:first-child {
+    margin-top: 0;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+    margin: 1.9em 0 .6em;
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    scroll-margin-top: 70px;
+}
+
+.prose h1 {
+    margin-top: 1.4em;
+    padding-bottom: .35em;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 1.55em;
+}
+
+.prose h2 { font-size: 1.3em; }
+.prose h3 { font-size: 1.12em; }
+.prose h4,
+.prose h5,
+.prose h6 {
+    font-size: 1em;
+    color: var(--dim);
+}
+
+.prose p {
+    margin: 0 0 1.05em;
+}
+
+.prose strong {
+    font-weight: 600;
+    color: #f1f3f5;
+}
+
+.prose em {
+    color: var(--dim);
+}
+
+.prose ul,
+.prose ol {
+    margin: 0 0 1.05em;
+    padding-left: 1.5em;
+}
+
+.prose li {
+    margin: .3em 0;
+}
+
+.prose li::marker {
+    color: var(--faint);
+}
+
+.prose blockquote {
+    margin: 1.3em 0;
+    padding: 2px 0 2px 18px;
+    border-left: 2px solid var(--accent-quiet);
+    color: var(--dim);
+}
+
+.prose blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+.prose hr {
+    margin: 2.2em 0;
+    border: 0;
+    border-top: 1px solid var(--line-soft);
+}
+
+.prose a {
+    text-decoration: underline;
+    text-decoration-color: var(--accent-quiet);
+    text-underline-offset: 3px;
+}
+
+.prose img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+.prose code {
+    padding: .12em .38em;
+    border: 1px solid var(--line-soft);
+    border-radius: 4px;
+    background-color: var(--surface);
+    font-family: var(--mono);
+    font-size: .87em;
+}
+
+.prose pre {
+    margin: 1.4em 0;
+    padding: 16px 18px;
+
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    background-color: #131517;
+
+    overflow-x: auto;
+    line-height: 1.6;
+}
+
+.prose pre code {
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: .875em;
+}
+
+.prose table {
+    width: 100%;
+    margin: 1.4em 0;
+    border-collapse: collapse;
+    font-size: .95em;
+    display: block;
+    overflow-x: auto;
+}
+
+.prose th,
+.prose td {
+    padding: 9px 13px;
+    border: 1px solid var(--line-soft);
+    text-align: left;
+}
+
+.prose th {
+    background-color: var(--surface);
+    font-weight: 600;
+}
+
+.prose .admonition {
+    margin: 1.4em 0;
+    padding: 14px 18px;
+    border: 1px solid var(--line-soft);
+    border-left: 2px solid var(--accent-quiet);
+    border-radius: var(--radius);
+    background-color: var(--surface);
+}
+
+.prose .admonition-title {
+    margin: 0 0 .4em;
+    font-weight: 600;
+    font-size: .95em;
+}
+
+.prose sup a {
+    text-decoration: none;
+}
+
+.prose .footnote {
+    margin-top: 2.4em;
+    padding-top: 1.2em;
+    border-top: 1px solid var(--line-soft);
+    color: var(--dim);
+    font-size: .9em;
+}
+
+/* Просмотр исходников — код на всю ширину, без рамки внутри рамки. */
+.prose-source {
+    max-width: none;
+}
+
+.prose-source .codehilite {
+    margin: 0;
+}
+
+.note-foot {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line-soft);
+}
+
+.back {
+    color: var(--dim);
+    font-size: 14px;
+}
+
+.back:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   Окно контактов
+   -------------------------------------------------------------------------- */
+
+.dialog {
+    width: min(420px, calc(100vw - 40px));
+    padding: 0;
+
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+.dialog::backdrop {
+    background-color: rgba(0, 0, 0, .6);
+}
+
+.dialog-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line-soft);
+}
+
+.dialog-head h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.dialog-close {
+    width: 26px;
+    height: 26px;
+    padding: 0;
+
+    border: 0;
+    border-radius: 5px;
+    background: none;
+    color: var(--faint);
+
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.dialog-close:hover {
+    background-color: var(--surface-hover);
+    color: var(--text);
+}
+
+.dialog-body {
+    margin: 0;
+    padding: 18px;
+    color: var(--dim);
+    font-size: 14.5px;
+}
+
+/* --------------------------------------------------------------------------
+   Узкие экраны
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 620px) {
+    .topbar-inner {
+        height: auto;
+        padding: 10px 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .nav {
+        margin-left: -10px;
+        flex-wrap: wrap;
+    }
+
+    .page {
+        padding: 28px 16px 56px;
+    }
+
+    .footer {
+        padding: 20px 16px 28px;
+    }
+
+    .intro h1 {
+        font-size: 27px;
+    }
+
+    .entry {
+        flex-wrap: wrap;
+        gap: 4px 12px;
+    }
+
+    .entry-name {
+        flex: 1 1 auto;
+        white-space: normal;
+    }
+
+    .entry-meta {
+        flex-basis: 100%;
+        padding-left: 29px;
+    }
+
+    .prose {
+        font-size: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Подсветка кода (Pygments) — приглушённая палитра под тёмный фон
+   -------------------------------------------------------------------------- */
+
+.codehilite {
+    margin: 1.4em 0;
+}
+
+.codehilite pre {
+    margin: 0;
+}
+
+.codehilite .c,  .codehilite .c1, .codehilite .cm,
+.codehilite .cs, .codehilite .cp, .codehilite .cpf {
+    color: var(--faint);
+    font-style: italic;
+}
+
+.codehilite .k,  .codehilite .kc, .codehilite .kd, .codehilite .kn,
+.codehilite .kp, .codehilite .kr, .codehilite .ow {
+    color: #b0a0d0;
+}
+
+.codehilite .kt,
+.codehilite .nc,
+.codehilite .nn {
+    color: #d6c58c;
+}
+
+.codehilite .s,  .codehilite .s1, .codehilite .s2, .codehilite .sb,
+.codehilite .sc, .codehilite .sd, .codehilite .se, .codehilite .sh,
+.codehilite .si, .codehilite .sx, .codehilite .sr, .codehilite .ss,
+.codehilite .sa {
+    color: #a3c9a8;
+}
+
+.codehilite .m,  .codehilite .mi, .codehilite .mf, .codehilite .mh,
+.codehilite .mo, .codehilite .il {
+    color: #d8b48a;
+}
+
+.codehilite .nf,
+.codehilite .fm,
+.codehilite .nb,
+.codehilite .bp {
+    color: #8ab4d8;
+}
+
+.codehilite .nd,
+.codehilite .nt {
+    color: #d8b48a;
+}
+
+.codehilite .na,
+.codehilite .nv, .codehilite .vc, .codehilite .vg, .codehilite .vi {
+    color: #cfd3d8;
+}
+
+.codehilite .o,
+.codehilite .p {
+    color: var(--dim);
+}
+
+.codehilite .err {
+    color: #d98a8a;
+}
+
+.codehilite .gd { color: #d98a8a; }
+.codehilite .gi { color: #a3c9a8; }
+.codehilite .ge { font-style: italic; }
+.codehilite .gs { font-weight: 600; }
+.codehilite .gh,
+.codehilite .gu { color: var(--dim); font-weight: 600; }

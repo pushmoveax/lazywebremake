@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Не найдено — lazyweb{% endblock %}
+
+{% block body %}
+
+<section class="intro">
+    <h1>404</h1>
+    <p class="lead">Такой страницы или заметки нет.</p>
+    <a class="button" href="{{ url_for('Browse') }}">К списку файлов</a>
+</section>
+
+{% endblock %}

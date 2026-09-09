@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Полезное — lazyweb{% endblock %}
+
+{% block body %}
+
+<h1 class="page-title">Полезное</h1>
+
+<p class="lead">Ссылки на исходники и то, из чего это собрано.</p>
+
+<section class="section">
+    <h2 class="section-title">Репозитории</h2>
+    <ul class="entry-list">
+        <li>
+            <a class="entry" href="https://github.com/vintdime/coolserver" target="_blank" rel="noopener">
+                <span class="entry-icon" data-kind="link" aria-hidden="true"></span>
+                <span class="entry-name">coolserver</span>
+                <span class="entry-meta">исходный код сервера</span>
+            </a>
+        </li>
+        <li>
+            <a class="entry" href="https://github.com/vintdime/mykpklectures" target="_blank" rel="noopener">
+                <span class="entry-icon" data-kind="link" aria-hidden="true"></span>
+                <span class="entry-name">mykpklectures</span>
+                <span class="entry-meta">сами конспекты</span>
+            </a>
+        </li>
+    </ul>
+</section>
+
+<section class="section">
+    <h2 class="section-title">На чём работает</h2>
+    <ul class="plain-list">
+        <li>Flask — маршруты и рендер страниц</li>
+        <li>Python-Markdown — разбор заметок</li>
+        <li>Pygments — подсветка кода</li>
+    </ul>
+</section>
+
+{% endblock %}

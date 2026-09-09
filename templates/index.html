@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}lazyweb — заметки{% endblock %}
+
+{% block body %}
+
+<section class="intro">
+    <h1>lazyweb</h1>
+    <p class="lead">
+        Небольшой сервер, который читает папку с markdown-файлами и показывает
+        её как обычный сайт. Здесь лежат конспекты с пар.
+    </p>
+    <p class="note-muted">
+        Это мой первый сайт. Я его написал потому что мне было очень скучно и
+        мне показалось, что это будет интересно. Завайбкожено на 80 процентов,
+        но вроде я узнал что-то новое. Задеплоено 9 сентября.
+    </p>
+    <a class="button" href="{{ url_for('Browse') }}">Открыть файлы</a>
+</section>
+
+{% if items %}
+<section class="section">
+    <h2 class="section-title">Разделы</h2>
+    <ul class="entry-list">
+        {% for item in items %}
+            <li>
+                <a class="entry" href="{{ url_for('Browse', filepath=item.path) }}">
+                    <span class="entry-icon" data-kind="{{ item.kind }}" aria-hidden="true"></span>
+                    <span class="entry-name">{{ item.name }}</span>
+                    <span class="entry-meta">{{ item.meta }}</span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
+{% endblock %}

@@ -19,13 +19,26 @@ python main.py
 ## Как устроено
 
 ```
-main.py            маршруты, разбор markdown, обход content/
-api/index.py       точка входа для Vercel (WSGI)
+main.py            маршруты, разбор markdown, обход content/, WSGI-приложение
 content/           сами заметки (.md и исходники)
 templates/         Jinja-шаблоны
 static/css/        одна таблица стилей
-vercel.json        rewrite всех путей на функцию
+vercel.json        сборка main.py и маршрут всех путей в приложение
 ```
+
+## Деплой
+
+Развёрнуто на Vercel: <https://lazywebremake.vercel.app>. Пуш в `main`
+пересобирает деплой автоматически.
+
+Два места, где Vercel ведёт себя не как локальный сервер, и это учтено
+в конфиге и коде:
+
+- `rewrites` подменяют путь, и приложение видит `/api/index` вместо
+  запрошенного URL. Поэтому в `vercel.json` используются `builds`+`routes`;
+- Python-рантайм не раскодирует `PATH_INFO`, хотя WSGI это предполагает.
+  Middleware в `main.py` чинит это — только на Vercel, локально путь
+  приходит уже раскодированным.
 
 ## Разбор markdown
 

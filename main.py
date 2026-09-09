@@ -26,6 +26,10 @@ SOURCE_SUFFIXES = {
     ".sql", ".toml", ".ts", ".tsx", ".txt", ".xml", ".yaml", ".yml",
 }
 
+# Каталоги, которых на сайте быть не должно: скрытые и служебные.
+# __pycache__ создаёт сам сборщик Vercel, компилируя .py из content/.
+IGNORED_NAMES = {"__pycache__"}
+
 app = Flask(__name__)
 
 
@@ -122,6 +126,10 @@ def flatten_toc(tokens: list, depth: int = 0) -> list:
 # файловая часть
 # --------------------------------------------------------------------------
 
+def is_ignored(name: str) -> bool:
+    return name.startswith(".") or name in IGNORED_NAMES
+
+
 def resolve_safe(filepath: str) -> Path:
     """Путь внутри content/ — или 404."""
     if "\x00" in filepath:
@@ -132,7 +140,7 @@ def resolve_safe(filepath: str) -> Path:
     if target != CONTENT_DIR and CONTENT_DIR not in target.parents:
         abort(404)
 
-    if any(part.startswith(".") for part in target.relative_to(CONTENT_DIR).parts):
+    if any(is_ignored(part) for part in target.relative_to(CONTENT_DIR).parts):
         abort(404)
 
     return target
@@ -153,7 +161,7 @@ def describe_folder(path: Path) -> str:
     notes = folders = 0
     try:
         for item in path.rglob("*"):
-            if any(part.startswith(".") for part in item.relative_to(path).parts):
+            if any(is_ignored(part) for part in item.relative_to(path).parts):
                 continue
             if item.is_dir():
                 folders += 1
@@ -182,7 +190,7 @@ def list_dir(path: Path, rel: str) -> list[dict]:
     folders, files = [], []
 
     for item in sorted(path.iterdir(), key=lambda p: sort_key(p.name)):
-        if item.name.startswith("."):
+        if is_ignored(item.name):
             continue
 
         child = f"{rel}/{item.name}" if rel else item.name
